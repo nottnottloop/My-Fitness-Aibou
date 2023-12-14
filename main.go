@@ -1,7 +1,7 @@
 package main
 
 import (
-	"My-Fitness-Aibou/internal/internal"
+	"github.com/Lionel-Wilson/My-Fitness-Aibou/internal"
 
 	"github.com/gin-gonic/gin"
 )

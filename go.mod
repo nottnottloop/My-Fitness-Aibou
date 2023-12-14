@@ -1,4 +1,4 @@
-module My-Fitness-Aibou/internal
+module github.com/Lionel-Wilson/My-Fitness-Aibou
 
 go 1.21.3
 
