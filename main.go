@@ -11,9 +11,9 @@ func main() {
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 
-	v1 := router.Group("/user")
+	user := router.Group("/user")
 	{
-		v1.GET("signup", internal.Signup)
+		user.POST("signup", internal.Signup)
 	}
 
 	// By default it serves on :8080 unless a
