@@ -2,8 +2,6 @@ package internal
 
 import (
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 type SignUpBody struct {
@@ -15,7 +13,26 @@ type SignUpBody struct {
 	Gender    string `json:"gender"`
 }
 
-// Hello returns a greeting for the named person.
+func Home(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+	w.Write([]byte("You have reached the my fitness aibou home"))
+
+}
+func Signup(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "POST" {
+		w.Header().Set("Allow", "POST")
+		http.Error(w, "Method Not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	w.Write([]byte("You have signed up successfully"))
+
+}
+
+/*gin version
 func Signup(c *gin.Context) {
 	var signUpDetails SignUpBody
 
@@ -34,3 +51,4 @@ func Signup(c *gin.Context) {
 		"User Details": signUpDetails,
 	})
 }
+*/
