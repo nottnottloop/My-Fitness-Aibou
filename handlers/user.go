@@ -14,6 +14,7 @@ type SignUpBody struct {
 }
 
 func Home(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
@@ -22,6 +23,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 }
 func Signup(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 
 	if r.Method != "POST" {
 		w.Header().Set("Allow", "POST")

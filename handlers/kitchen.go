@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 )
@@ -12,7 +13,12 @@ type BmrDTO struct {
 	Gender string
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+}
+
 func GetBMR(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	age, err := strconv.Atoi(r.URL.Query().Get("age"))
 	if err != nil || age < 1 {
 		http.Error(w, "Invalid age", http.StatusBadRequest)
@@ -29,7 +35,7 @@ func GetBMR(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	gender := r.URL.Query().Get("gender")
-	if gender != "male" && gender != "female" {
+	if gender != "Male" && gender != "Female" {
 		http.Error(w, "Invalid gender. THERE'S ONLY 2 GENDERS!", http.StatusBadRequest)
 		return
 	}
@@ -45,14 +51,18 @@ func GetBMR(w http.ResponseWriter, r *http.Request) {
 		Gender: gender,
 	}
 	bmr := calculateBMR(userinfo)
+	bmrJson, err := json.Marshal("BMR : " + strconv.FormatFloat(bmr, 'f', -1, 64))
+	if err != nil {
+		http.Error(w, "Somwething went wrong", http.StatusInternalServerError)
+	}
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	w.Write([]byte("BMR : " + strconv.FormatFloat(bmr, 'f', -1, 64)))
+	w.Write(bmrJson)
 
 }
 
 func calculateBMR(userInfo BmrDTO) float64 {
 	//Mifflin-St Jeor Equation:
-	if userInfo.Gender == "male" {
+	if userInfo.Gender == "Male" {
 		bmr := (10 * float64(userInfo.Weight)) + (6.25 * float64(userInfo.Height)) - (5 * float64(userInfo.Age)) + float64(5)
 		return bmr
 	}
