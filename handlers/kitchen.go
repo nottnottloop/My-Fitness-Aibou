@@ -14,17 +14,17 @@ type BmrDTO struct {
 
 func GetBMR(w http.ResponseWriter, r *http.Request) {
 	age, err := strconv.Atoi(r.URL.Query().Get("age"))
-	if err != nil {
+	if err != nil || age < 1 {
 		http.Error(w, "Invalid age", http.StatusBadRequest)
 		return
 	}
 	height, err := strconv.Atoi(r.URL.Query().Get("height"))
-	if err != nil {
+	if err != nil || height < 1 {
 		http.Error(w, "Invalid height", http.StatusBadRequest)
 		return
 	}
 	weight, err := strconv.Atoi(r.URL.Query().Get("weight"))
-	if err != nil {
+	if err != nil || weight < 1 {
 		http.Error(w, "Invalid weight", http.StatusBadRequest)
 		return
 	}
