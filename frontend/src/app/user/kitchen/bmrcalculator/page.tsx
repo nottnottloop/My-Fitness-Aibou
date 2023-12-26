@@ -3,7 +3,7 @@ import { HomeNavBar } from "@/app/components/homenavbar";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
-export default function Page() {
+export default function BmrCalculator() {
   const [bmrResult, setBmrResult] = useState();
   const navigation = [
     { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
@@ -75,7 +75,7 @@ export default function Page() {
               </p>
 
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-4">
                   <label
                     htmlFor="weight"
                     className="block text-sm font-medium leading-6 text-amber-300"
@@ -93,10 +93,10 @@ export default function Page() {
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-4">
                   <label
                     htmlFor="height"
-                    className="block text-sm font-medium leading-6 text-gray-100"
+                    className="block text-sm font-medium leading-6 text-amber-300"
                   >
                     Height (in cm)
                   </label>

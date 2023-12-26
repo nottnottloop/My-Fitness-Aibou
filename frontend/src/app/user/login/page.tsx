@@ -1,6 +1,6 @@
 import { HomeNavBar } from "@/app/components/homenavbar";
 
-export default function Page() {
+export default function Login() {
   const navigation = [
     { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
     { name: "Sign Up", href: "/user/signup" },

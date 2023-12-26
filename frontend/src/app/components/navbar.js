@@ -39,7 +39,7 @@ export default function NavBar() {
                   <img
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                    alt="My Fitness Aibou"
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
