@@ -204,7 +204,7 @@ export default function Home() {
                   Deploy faster
                 </h2>
                 <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  A better workflow
+                  Hit your health goals in 1-2-3
                 </p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
                   Lorem ipsum, dolor sit amet consectetur adipisicing elit.
