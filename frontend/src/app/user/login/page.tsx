@@ -1,6 +1,13 @@
+import { HomeNavBar } from "@/app/components/homenavbar";
+
 export default function Page() {
+  const navigation = [
+    { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
+    { name: "Sign Up", href: "/user/signup" },
+  ];
   return (
     <>
+      <HomeNavBar props={navigation} />
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
