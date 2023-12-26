@@ -27,7 +27,9 @@ export default function Page() {
     )
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Failed to fetch data");
+          return res.text().then((text) => {
+            throw new Error(text);
+          });
         }
         return res.json();
       })
