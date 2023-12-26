@@ -12,7 +12,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full bg-white">
+    <html
+      lang="en"
+      className="h-full bg-gradient-to-r from-gray-950 from-25% via-gray-600 via-65% to-gray-500 to-90%"
+    >
       <body className="h-full">{children}</body>
     </html>
   );
