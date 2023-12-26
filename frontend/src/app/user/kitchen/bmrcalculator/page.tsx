@@ -12,7 +12,7 @@ export default function Page() {
       height: formData.get("height"),
       gender: formData.get("gender"),
     };
-    console.log(rawFormData);
+    //console.log(rawFormData);
 
     const res = fetch(
       "http://localhost:8080/kitchen/bmr?age=" +
@@ -37,6 +37,7 @@ export default function Page() {
         setBmrResult(data);
       });
   }
+
   return (
     <div className="mx-auto max-w-7xl px-2 py-14 sm:px-6 lg:px-8">
       <form action={getBmr}>
@@ -151,7 +152,11 @@ export default function Page() {
           </button>
         </div>
       </form>
-      <div>{bmrResult ?? <p>{bmrResult}</p>}</div>
+      <div>
+        <h1 className="text-base font-semibold leading-7 text-gray-900">
+          {bmrResult ?? bmrResult}
+        </h1>
+      </div>
     </div>
   );
 }
