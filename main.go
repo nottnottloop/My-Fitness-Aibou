@@ -3,11 +3,28 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	handlers "github.com/Lionel-Wilson/My-Fitness-Aibou/handlers"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	//Configuration
+
+	// Load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	addr, exists := os.LookupEnv("DEV_ADDRESS")
+	if !exists {
+		log.Fatal(exists)
+	}
+	/* command line - flag version
+	addr := flag.String("addr", ":8080", "Http network address")
+	flag.Parse()
+	*/
 	router := http.NewServeMux()
 	router.HandleFunc("/", handlers.Home)
 
@@ -17,8 +34,8 @@ func main() {
 	//Kitchen Features
 	router.HandleFunc("/kitchen/bmr", handlers.GetBMR)
 
-	log.Println("Starting server on :8080")
-	err := http.ListenAndServe(":8080", router)
+	log.Printf("Starting server on %s", addr)
+	err = http.ListenAndServe(addr, router)
 	log.Fatal(err)
 
 }
