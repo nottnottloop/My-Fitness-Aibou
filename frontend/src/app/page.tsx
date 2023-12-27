@@ -7,7 +7,7 @@ import {
   ShoppingCartIcon,
   UsersIcon,
 } from "@heroicons/react/20/solid";
-import { HomeNavBar } from "./components/homenavbar";
+import { HomeNavBar } from "./components/Homenavbar";
 
 const navigation = [
   { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
