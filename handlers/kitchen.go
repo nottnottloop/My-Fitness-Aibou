@@ -62,10 +62,11 @@ func GetBMR(w http.ResponseWriter, r *http.Request) {
 
 func calculateBMR(userInfo BmrDTO) float64 {
 	//Mifflin-St Jeor Equation:
+	bmr := (10 * float64(userInfo.Weight)) + (6.25 * float64(userInfo.Height)) - (5 * float64(userInfo.Age))
 	if userInfo.Gender == "Male" {
-		bmr := (10 * float64(userInfo.Weight)) + (6.25 * float64(userInfo.Height)) - (5 * float64(userInfo.Age)) + float64(5)
+		bmr += float64(5)
 		return bmr
 	}
-	bmr := (10 * float64(userInfo.Weight)) + (6.25 * float64(userInfo.Height)) - (5 * float64(userInfo.Age)) - float64(161)
+	bmr -= float64(161)
 	return bmr
 }
