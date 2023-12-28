@@ -1,4 +1,4 @@
-package internal
+package main
 
 import (
 	"encoding/json"
@@ -17,33 +17,44 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 }
 
-func GetBMR(w http.ResponseWriter, r *http.Request) {
+func (app *application) GetBMR(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	age, err := strconv.Atoi(r.URL.Query().Get("age"))
-	if err != nil || age < 1 {
-		http.Error(w, "Invalid age", http.StatusBadRequest)
-		return
-	}
-	height, err := strconv.Atoi(r.URL.Query().Get("height"))
-	if err != nil || height < 1 {
-		http.Error(w, "Invalid height", http.StatusBadRequest)
-		return
-	}
-	weight, err := strconv.Atoi(r.URL.Query().Get("weight"))
-	if err != nil || weight < 1 {
-		http.Error(w, "Invalid weight", http.StatusBadRequest)
-		return
-	}
-	gender := r.URL.Query().Get("gender")
-	if gender != "Male" && gender != "Female" {
-		http.Error(w, "Invalid gender. THERE'S ONLY 2 GENDERS!", http.StatusBadRequest)
-		return
-	}
 
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
+
+	age, err := strconv.Atoi(r.URL.Query().Get("age"))
+	if err != nil || age < 1 {
+		if err != nil {
+			app.errorLog.Println(err.Error())
+		}
+		http.Error(w, "Invalid age", http.StatusBadRequest)
+		return
+	}
+	height, err := strconv.Atoi(r.URL.Query().Get("height"))
+	if err != nil || height < 1 {
+		if err != nil {
+			app.errorLog.Println(err.Error())
+		}
+		http.Error(w, "Invalid height", http.StatusBadRequest)
+		return
+	}
+	weight, err := strconv.Atoi(r.URL.Query().Get("weight"))
+	if err != nil || weight < 1 {
+		if err != nil {
+			app.errorLog.Println(err.Error())
+		}
+		http.Error(w, "Invalid weight", http.StatusBadRequest)
+		return
+	}
+	gender := r.URL.Query().Get("gender")
+	if gender != "Male" && gender != "Female" {
+		http.Error(w, "Invalid gender", http.StatusBadRequest)
+		return
+	}
+
 	userinfo := BmrDTO{
 		Age:    age,
 		Height: height,
@@ -53,6 +64,7 @@ func GetBMR(w http.ResponseWriter, r *http.Request) {
 	bmr := calculateBMR(userinfo)
 	bmrJson, err := json.Marshal("BMR : " + strconv.FormatFloat(bmr, 'f', -1, 64))
 	if err != nil {
+		app.errorLog.Println(err.Error())
 		http.Error(w, "Somwething went wrong", http.StatusInternalServerError)
 	}
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")

@@ -1,4 +1,4 @@
-package internal
+package main
 
 import (
 	"net/http"
@@ -13,7 +13,7 @@ type SignUpBody struct {
 	Gender    string `json:"gender"`
 }
 
-func Home(w http.ResponseWriter, r *http.Request) {
+func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -22,7 +22,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("You have reached the my fitness aibou home"))
 
 }
-func Signup(w http.ResponseWriter, r *http.Request) {
+func (app *application) Signup(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	if r.Method != "POST" {

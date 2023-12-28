@@ -5,9 +5,13 @@ import (
 	"net/http"
 	"os"
 
-	handlers "github.com/Lionel-Wilson/My-Fitness-Aibou/handlers"
 	"github.com/joho/godotenv"
 )
+
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
 
 func main() {
 	//Configuration
@@ -26,14 +30,19 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
+	app := &application{
+		errorLog: errorLog,
+		infoLog:  infoLog,
+	}
+
 	router := http.NewServeMux()
-	router.HandleFunc("/", handlers.Home)
+	router.HandleFunc("/", app.Home)
 
 	//user
-	router.HandleFunc("/user/signup", handlers.Signup)
+	router.HandleFunc("/user/signup", app.Signup)
 
 	//Kitchen Features
-	router.HandleFunc("/kitchen/bmr", handlers.GetBMR)
+	router.HandleFunc("/kitchen/bmr", app.GetBMR)
 
 	srv := &http.Server{
 		Addr:     addr,
