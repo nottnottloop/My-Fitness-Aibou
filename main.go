@@ -17,14 +17,15 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	addr, exists := os.LookupEnv("DEV_ADDRESS")
-	if !exists {
-		log.Fatal(exists)
-	}
+	addr := os.Getenv("DEV_ADDRESS")
 	/* command line - flag version
 	addr := flag.String("addr", ":8080", "Http network address")
 	flag.Parse()
 	*/
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
 	router := http.NewServeMux()
 	router.HandleFunc("/", handlers.Home)
 
@@ -34,9 +35,15 @@ func main() {
 	//Kitchen Features
 	router.HandleFunc("/kitchen/bmr", handlers.GetBMR)
 
-	log.Printf("Starting server on %s", addr)
-	err = http.ListenAndServe(addr, router)
-	log.Fatal(err)
+	srv := &http.Server{
+		Addr:     addr,
+		ErrorLog: errorLog,
+		Handler:  router,
+	}
+
+	infoLog.Printf("Starting server on %s", addr)
+	err = srv.ListenAndServe()
+	errorLog.Fatal(err)
 
 }
 
