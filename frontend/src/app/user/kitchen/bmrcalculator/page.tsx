@@ -4,10 +4,6 @@ import { useState } from "react";
 
 export default function BmrCalculator() {
   const [bmrResult, setBmrResult] = useState();
-  const navigation = [
-    { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
-    { name: "Sign Up", href: "/user/signup" },
-  ];
 
   function getBmr(formData: FormData) {
     const rawFormData = {
@@ -48,7 +44,7 @@ export default function BmrCalculator() {
 
   return (
     <>
-      <HomeNavBar props={navigation} />
+      <HomeNavBar />
       <div className="mx-auto max-w-7xl px-2 py-14 sm:px-6 lg:px-8 ">
         <form action={getBmr} id="bmr-form">
           <div className="space-y-12">

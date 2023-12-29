@@ -3,10 +3,14 @@ import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
+const navigation = [
+  { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
+  { name: "Sign Up", href: "/user/signup" },
+];
 
-
-export function HomeNavBar({props }) {
+export function HomeNavBar({props=navigation }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   return (
     

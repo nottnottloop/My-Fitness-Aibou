@@ -9,10 +9,7 @@ import {
 export function HomePage() {
 
 
-    const navigation = [
-        { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
-        { name: "Sign Up", href: "/user/signup" },
-      ];
+
       const features = [
         {
           name: "Create your own workouts.",
@@ -36,7 +33,7 @@ export function HomePage() {
   return (
     <div className="bg-gradient-to-r from-gray-950 from-25% via-gray-600 via-65% to-gray-500 to-90%">
     <header className="absolute inset-x-0 top-0 z-50">
-      <HomeNavBar  props={navigation} />
+      <HomeNavBar   />
 
  
     </header>
