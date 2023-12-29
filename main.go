@@ -1,10 +1,14 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"runtime/debug"
 
+	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/joho/godotenv"
 )
 
@@ -13,41 +17,60 @@ type application struct {
 	infoLog  *log.Logger
 }
 
+func (app *application) serverError(w http.ResponseWriter, err error) {
+	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
+	app.errorLog.Output(2, trace)
+	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+}
+
+func openDB(connectionString string) (*sql.DB, error) {
+	db, err := sql.Open("sqlserver", connectionString)
+	if err != nil {
+		return nil, err
+	}
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+	return db, nil
+}
+
+func buildConnectionString() string {
+	server := os.Getenv("DEV_SERVER")
+	user := os.Getenv("USER")
+	password := os.Getenv("PASSWORD")
+	database := os.Getenv("DATABASE")
+
+	connectionString := fmt.Sprintf(`sqlserver:/%s:%s@%s?database=%s`, user, password, server, database)
+	return connectionString
+}
+
 func main() {
 	//Configuration
-
-	// Load environment variables from .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 	addr := os.Getenv("DEV_ADDRESS")
-	/* command line - flag version
-	addr := flag.String("addr", ":8080", "Http network address")
-	flag.Parse()
-	*/
+	connectionString := buildConnectionString()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	db, err := openDB(connectionString)
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+	defer db.Close()
 
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
 	}
 
-	router := http.NewServeMux()
-	router.HandleFunc("/", app.Home)
-
-	//user
-	router.HandleFunc("/user/signup", app.Signup)
-
-	//Kitchen Features
-	router.HandleFunc("/kitchen/bmr", app.GetBMR)
-
 	srv := &http.Server{
 		Addr:     addr,
 		ErrorLog: errorLog,
-		Handler:  router,
+		Handler:  app.routes(),
 	}
 
 	infoLog.Printf("Starting server on %s", addr)
@@ -55,21 +78,3 @@ func main() {
 	errorLog.Fatal(err)
 
 }
-
-/*gin version
-func main() {
-	// Creates a gin router with default middleware:
-	// logger and recovery (crash-free) middleware
-	router := gin.Default()
-
-	user := router.Group("/user")
-	{
-		user.POST("signup", internal.Signup)
-	}
-
-	// By default it serves on :8080 unless a
-	// PORT environment variable was defined.
-	router.Run()
-	// router.Run(":3000") for a hard coded port
-}
-*/

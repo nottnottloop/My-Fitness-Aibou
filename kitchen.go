@@ -64,8 +64,7 @@ func (app *application) GetBMR(w http.ResponseWriter, r *http.Request) {
 	bmr := calculateBMR(userinfo)
 	bmrJson, err := json.Marshal("BMR : " + strconv.FormatFloat(bmr, 'f', -1, 64))
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Somwething went wrong", http.StatusInternalServerError)
+		app.serverError(w, err)
 	}
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Write(bmrJson)
