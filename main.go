@@ -8,13 +8,18 @@ import (
 	"os"
 	"runtime/debug"
 
-	_ "github.com/denisenkom/go-mssqldb"
+	msssql "github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models/mssql"
 	"github.com/joho/godotenv"
+
+	//_ "github.com/denisenkom/go-mssqldb"
+	//_ "github.com/microsoft/go-mssqldb"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
+	errorLog    *log.Logger
+	infoLog     *log.Logger
+	workoutLogs *msssql.WorkoutLogModel
 }
 
 func (app *application) serverError(w http.ResponseWriter, err error) {
@@ -24,23 +29,25 @@ func (app *application) serverError(w http.ResponseWriter, err error) {
 }
 
 func openDB(connectionString string) (*sql.DB, error) {
-	db, err := sql.Open("sqlserver", connectionString)
+	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		return nil, err
 	}
+
 	if err = db.Ping(); err != nil {
 		return nil, err
 	}
+
 	return db, nil
 }
 
 func buildConnectionString() string {
-	server := os.Getenv("DEV_SERVER")
+	//server := os.Getenv("DEV_SERVER")
 	user := os.Getenv("USER")
 	password := os.Getenv("PASSWORD")
 	database := os.Getenv("DATABASE")
 
-	connectionString := fmt.Sprintf(`sqlserver:/%s:%s@%s?database=%s`, user, password, server, database)
+	connectionString := fmt.Sprintf(`%s:%s@/%s?parseTime=true`, user, password, database)
 	return connectionString
 }
 
@@ -63,8 +70,9 @@ func main() {
 	defer db.Close()
 
 	app := &application{
-		errorLog: errorLog,
-		infoLog:  infoLog,
+		errorLog:    errorLog,
+		infoLog:     infoLog,
+		workoutLogs: &msssql.WorkoutLogModel{DB: db},
 	}
 
 	srv := &http.Server{
