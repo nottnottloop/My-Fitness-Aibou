@@ -27,34 +27,21 @@ func (m *WorkoutLogModel) Insert(UserId int, ExerciseName string, CurrentWeight 
 	}
 
 	return int(id), nil
-
-	/*
-		rows, err := m.DB.Query("SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'")
-
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer rows.Close()
-
-		// Iterate through the result set and print table names
-		for rows.Next() {
-			var tableName string
-			if err := rows.Scan(&tableName); err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println("Table:", tableName)
-		}
-
-		// Check for errors from iterating over rows
-		if err := rows.Err(); err != nil {
-			log.Fatal(err)
-		}
-		return 1, nil
-	*/
 }
 
 func (m *WorkoutLogModel) Get(Id int) (*models.WorkoutLog, error) {
-	return nil, nil
+	result := &models.WorkoutLog{}
+
+	query := `SELECT id,user_id, exercise_name, current_weight, max_reps, notes, created FROM workoutlogs WHERE id = ?;`
+
+	err := m.DB.QueryRow(query, Id).Scan(&result.ID, &result.UserId, &result.ExerciseName, &result.CurrentWeight, &result.MaxReps, &result.Notes, &result.Created)
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNoRecord
+	} else if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func (m *WorkoutLogModel) GetAll() ([]*models.WorkoutLog, error) {

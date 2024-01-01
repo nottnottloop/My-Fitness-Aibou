@@ -14,5 +14,6 @@ func (app *application) routes() *http.ServeMux {
 
 	//Workout Area
 	router.HandleFunc("/workout/addworkoutlog", app.addNewWorkoutLog)
+	router.HandleFunc("/workout/getworkoutlog", app.getWorkoutLog)
 	return router
 }
