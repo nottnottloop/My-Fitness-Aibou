@@ -51,16 +51,13 @@ func (m *WorkoutLogModel) GetAll() ([]*models.WorkoutLog, error) {
 	`
 
 	rows, err := m.DB.Query(query)
-	print("the rows:")
-	print(rows)
+
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
 	workoutlogs := []*models.WorkoutLog{}
-	print("the []*models.WorkoutLog{}:")
-	print(workoutlogs)
 
 	for rows.Next() {
 		// Create a pointer to a new zeroed Snippet struct.
