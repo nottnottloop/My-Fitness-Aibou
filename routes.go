@@ -2,7 +2,7 @@ package main
 
 import "net/http"
 
-func (app *application) routes() *http.ServeMux {
+func (app *application) routes() http.Handler {
 	router := http.NewServeMux()
 	router.HandleFunc("/", app.Home)
 
@@ -16,5 +16,5 @@ func (app *application) routes() *http.ServeMux {
 	router.HandleFunc("/workout/addworkoutlog", app.addNewWorkoutLog)
 	router.HandleFunc("/workout/getworkoutlog", app.getWorkoutLog)
 	router.HandleFunc("/workout/getallworkoutlogs", app.getAllWorkoutLogs)
-	return router
+	return app.recoverPanic(app.logRequest(secureHeaders(router)))
 }
