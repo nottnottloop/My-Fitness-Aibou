@@ -37,8 +37,6 @@ func openDB(connectionString string) (*sql.DB, error) {
 	if err = db.Ping(); err != nil {
 		return nil, err
 	}
-	db.SetMaxOpenConns(20)
-	db.SetMaxIdleConns(5)
 
 	return db, nil
 }
