@@ -52,6 +52,7 @@ func (app *application) getWorkoutLog(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	if r.Method != "GET" {
+		w.Header().Set("Allow", "GET")
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
@@ -83,6 +84,7 @@ func (app *application) getWorkoutLog(w http.ResponseWriter, r *http.Request) {
 func (app *application) getAllWorkoutLogs(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	if r.Method != "GET" {
+		w.Header().Set("Allow", "GET")
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
