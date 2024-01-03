@@ -79,3 +79,25 @@ func (app *application) getWorkoutLog(w http.ResponseWriter, r *http.Request) {
 	w.Write(resultJson)
 
 }
+
+func (app *application) getAllWorkoutLogs(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	if r.Method != "GET" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	result, err := app.workoutLogs.GetAll()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	resultJson, err := json.Marshal(result)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Write(resultJson)
+
+}

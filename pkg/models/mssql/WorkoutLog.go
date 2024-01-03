@@ -45,5 +45,40 @@ func (m *WorkoutLogModel) Get(Id int) (*models.WorkoutLog, error) {
 }
 
 func (m *WorkoutLogModel) GetAll() ([]*models.WorkoutLog, error) {
-	return nil, nil
+
+	query := `
+	SELECT * FROM myfitnessaiboudb.workoutlogs;
+	`
+
+	rows, err := m.DB.Query(query)
+	print("the rows:")
+	print(rows)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	workoutlogs := []*models.WorkoutLog{}
+	print("the []*models.WorkoutLog{}:")
+	print(workoutlogs)
+
+	for rows.Next() {
+		// Create a pointer to a new zeroed Snippet struct.
+		w := &models.WorkoutLog{}
+		// Use rows.Scan() to copy the values from each field in the row to the
+		// new Snippet object that we created. Again, the arguments to row.Scan
+		// must be pointers to the place you want to copy the data into, and the
+		// number of arguments must be exactly the same as the number of
+		// columns returned by your statement.
+		err = rows.Scan(&w.ID, &w.UserId, &w.ExerciseName, &w.CurrentWeight, &w.MaxReps, &w.Notes, &w.Created)
+		if err != nil {
+			return nil, err
+		}
+		workoutlogs = append(workoutlogs, w)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return workoutlogs, nil
 }
