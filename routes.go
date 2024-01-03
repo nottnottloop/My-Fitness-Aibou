@@ -1,8 +1,16 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/justinas/alice"
+)
 
 func (app *application) routes() http.Handler {
+	//Alice package allows use to chain middleware in a much more understandable and clearer way.
+	// recoverPanic -> logrequest -> secureHeaders ->...
+	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
+
 	router := http.NewServeMux()
 	router.HandleFunc("/", app.Home)
 
@@ -16,5 +24,7 @@ func (app *application) routes() http.Handler {
 	router.HandleFunc("/workout/addworkoutlog", app.addNewWorkoutLog)
 	router.HandleFunc("/workout/getworkoutlog", app.getWorkoutLog)
 	router.HandleFunc("/workout/getallworkoutlogs", app.getAllWorkoutLogs)
-	return app.recoverPanic(app.logRequest(secureHeaders(router)))
+
+	//...router -> secureHeaders -> logrequest -> recoverPanic -> client
+	return standardMiddleware.Then(router)
 }
