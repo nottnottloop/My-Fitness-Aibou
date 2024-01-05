@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 )
 
@@ -11,19 +12,21 @@ func (app *application) routes() http.Handler {
 	// recoverPanic -> logrequest -> secureHeaders ->...
 	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 
-	router := http.NewServeMux()
-	router.HandleFunc("/", app.Home)
+	//router := http.NewServeMux()
+	// using bmizernay/pat package to implement RESTful routes
+	router := pat.New()
+	router.Get("/", http.HandlerFunc(app.Home))
 
 	//user
-	router.HandleFunc("/user/signup", app.Signup)
+	router.Post("/user/signup", http.HandlerFunc(app.Signup))
 
 	//Kitchen Features
-	router.HandleFunc("/kitchen/bmr", app.GetBMR)
+	router.Post("/kitchen/bmr", http.HandlerFunc(app.GetBMR))
 
 	//Workout Area
-	router.HandleFunc("/workout/addworkoutlog", app.addNewWorkoutLog)
-	router.HandleFunc("/workout/getworkoutlog", app.getWorkoutLog)
-	router.HandleFunc("/workout/getallworkoutlogs", app.getAllWorkoutLogs)
+	router.Get("/workout/getworkoutlog", http.HandlerFunc(app.getWorkoutLog))
+	router.Get("/workout/getallworkoutlogs", http.HandlerFunc(app.getAllWorkoutLogs))
+	router.Post("/workout/addworkoutlog", http.HandlerFunc(app.addNewWorkoutLog))
 
 	//...router -> secureHeaders -> logrequest -> recoverPanic -> client
 	return standardMiddleware.Then(router)

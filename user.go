@@ -15,21 +15,13 @@ type SignUpBody struct {
 
 func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
+
 	w.Write([]byte("You have reached the my fitness aibou home"))
 
 }
 func (app *application) Signup(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
-	if r.Method != "POST" {
-		w.Header().Set("Allow", "POST")
-		http.Error(w, "Method Not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 	w.Write([]byte("You have signed up successfully"))
 
 }

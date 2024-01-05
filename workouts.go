@@ -2,20 +2,18 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models"
 )
 
 func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-
-	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -30,11 +28,35 @@ func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	errors := make(map[string]string)
+
 	userId := workoutLog.UserId
+	if userId < 0 {
+		errors["user id"] = "invalid user id"
+	}
 	exerciseName := workoutLog.ExerciseName
+	if strings.TrimSpace(exerciseName) == "" {
+		errors["exercise name"] = "This field cannot be blank"
+	} else if utf8.RuneCountInString(exerciseName) > 100 {
+		errors["exercise name"] = "This field is too long (maximum is 100 characters)"
+	}
 	CurrentWeight := workoutLog.CurrentWeight
+	if CurrentWeight < 0 {
+		errors["current weight"] = "invalid current weight"
+	}
 	MaxReps := workoutLog.MaxReps
+	if MaxReps < 0 {
+		errors["max reps"] = "invalid max reps"
+	}
 	Notes := workoutLog.Notes
+	if utf8.RuneCountInString(Notes) > 250 {
+		errors["notes"] = "This field is too long (maximum is 250 characters)"
+	}
+
+	if len(errors) > 0 {
+		fmt.Fprint(w, errors)
+		return
+	}
 
 	result, err := app.workoutLogs.Insert(userId, exerciseName, CurrentWeight, MaxReps, Notes)
 	if err != nil {
@@ -50,12 +72,6 @@ func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request)
 
 func (app *application) getWorkoutLog(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-
-	if r.Method != "GET" {
-		w.Header().Set("Allow", "GET")
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {

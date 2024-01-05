@@ -20,11 +20,6 @@ func enableCors(w *http.ResponseWriter) {
 func (app *application) GetBMR(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
-	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	age, err := strconv.Atoi(r.URL.Query().Get("age"))
 	if err != nil || age < 1 {
 		if err != nil {
