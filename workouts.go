@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -11,6 +10,19 @@ import (
 
 	"github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models"
 )
+
+type WorkoutLogDTO struct {
+	FormData   WorkoutLogFormData
+	FormErrors map[string]string
+}
+
+type WorkoutLogFormData struct {
+	UserId        int
+	ExerciseName  string
+	CurrentWeight int
+	MaxReps       int
+	Notes         string
+}
 
 func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
@@ -32,29 +44,45 @@ func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request)
 
 	userId := workoutLog.UserId
 	if userId < 0 {
-		errors["user id"] = "invalid user id"
+		errors["UserId"] = "invalid user id"
 	}
 	exerciseName := workoutLog.ExerciseName
 	if strings.TrimSpace(exerciseName) == "" {
-		errors["exercise name"] = "This field cannot be blank"
+		errors["ExerciseName"] = "This field cannot be blank"
 	} else if utf8.RuneCountInString(exerciseName) > 100 {
-		errors["exercise name"] = "This field is too long (maximum is 100 characters)"
+		errors["ExerciseName"] = "This field is too long (maximum is 100 characters)"
 	}
 	CurrentWeight := workoutLog.CurrentWeight
 	if CurrentWeight < 0 {
-		errors["current weight"] = "invalid current weight"
+		errors["CurrentWeight"] = "invalid current weight"
 	}
 	MaxReps := workoutLog.MaxReps
 	if MaxReps < 0 {
-		errors["max reps"] = "invalid max reps"
+		errors["MaxReps"] = "invalid max reps"
 	}
 	Notes := workoutLog.Notes
 	if utf8.RuneCountInString(Notes) > 250 {
-		errors["notes"] = "This field is too long (maximum is 250 characters)"
+		errors["Notes"] = "This field is too long (maximum is 250 characters)"
 	}
 
 	if len(errors) > 0 {
-		fmt.Fprint(w, errors)
+		result := WorkoutLogDTO{
+			FormData: WorkoutLogFormData{
+				UserId:        userId,
+				ExerciseName:  exerciseName,
+				CurrentWeight: CurrentWeight,
+				MaxReps:       MaxReps,
+				Notes:         Notes,
+			},
+			FormErrors: errors,
+		}
+		resultJson, err := json.Marshal(result)
+		if err != nil {
+			app.serverError(w, err)
+		}
+
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(resultJson)
 		return
 	}
 
