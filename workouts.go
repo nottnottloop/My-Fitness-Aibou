@@ -11,7 +11,7 @@ import (
 	"github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models"
 )
 
-type WorkoutLogDTO struct {
+type InvalidWorkoutLogDTO struct {
 	FormData   WorkoutLogFormData
 	FormErrors map[string]string
 }
@@ -66,7 +66,7 @@ func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request)
 	}
 
 	if len(errors) > 0 {
-		result := WorkoutLogDTO{
+		result := InvalidWorkoutLogDTO{
 			FormData: WorkoutLogFormData{
 				UserId:        userId,
 				ExerciseName:  exerciseName,
