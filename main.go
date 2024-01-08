@@ -7,8 +7,10 @@ import (
 	"net/http"
 	"os"
 	"runtime/debug"
+	"time"
 
 	msssql "github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models/mssql"
+	"github.com/golangcollege/sessions"
 	"github.com/joho/godotenv"
 
 	//_ "github.com/denisenkom/go-mssqldb"
@@ -20,6 +22,7 @@ type application struct {
 	errorLog    *log.Logger
 	infoLog     *log.Logger
 	workoutLogs *msssql.WorkoutLogModel
+	session     *sessions.Session
 }
 
 func (app *application) serverError(w http.ResponseWriter, err error) {
@@ -59,6 +62,7 @@ func main() {
 	}
 	addr := os.Getenv("DEV_ADDRESS")
 	connectionString := buildConnectionString()
+	secret := os.Getenv("SECRET")
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
@@ -69,10 +73,14 @@ func main() {
 	}
 	defer db.Close()
 
+	session := sessions.New([]byte(secret))
+	session.Lifetime = 12 * time.Hour
+
 	app := &application{
 		errorLog:    errorLog,
 		infoLog:     infoLog,
 		workoutLogs: &msssql.WorkoutLogModel{DB: db},
+		session:     session,
 	}
 
 	srv := &http.Server{

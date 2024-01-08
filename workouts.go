@@ -95,6 +95,9 @@ func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		app.serverError(w, err)
 	}
+
+	app.session.Put(r, "flash", "Workoutlog successfully created!")
+
 	w.Write(resultJson)
 }
 
