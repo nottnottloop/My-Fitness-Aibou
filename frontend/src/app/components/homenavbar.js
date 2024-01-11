@@ -2,6 +2,7 @@
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import Image from 'next/image'
 
 const navigation = [
   { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
@@ -22,10 +23,11 @@ export function HomeNavBar({props=navigation }) {
       <div className="flex lg:flex-1">
         <a href="/" className="-m-1.5 p-1.5">
           <span className="sr-only">Your Company</span>
-          <img
-            className="h-8 w-auto"
+          <Image
             src="https://tailwindui.com/img/logos/mark.svg?color=amber&shade=300"
-            alt="" />
+            alt=""
+            height={32}
+            width={47} />
         </a>
       </div>
       <div className="flex lg:hidden">
@@ -69,10 +71,13 @@ export function HomeNavBar({props=navigation }) {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
+              <Image
                 className="h-8 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=amber&shade=300"
-                alt="" />
+                alt=""
+                height={32}
+                width={47}
+                 />
             </a>
             <button
               type="button"
