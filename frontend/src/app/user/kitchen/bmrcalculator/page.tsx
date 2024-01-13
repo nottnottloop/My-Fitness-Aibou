@@ -39,7 +39,11 @@ export default function BmrCalculator() {
   }
 
   function clearForm() {
-    document.getElementById("bmr-form").reset();
+    const form = document.getElementById("bmr-form") as HTMLFormElement;
+
+    if (form) {
+      form.reset();
+    }
   }
 
   return (
