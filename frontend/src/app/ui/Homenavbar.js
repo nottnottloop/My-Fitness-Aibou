@@ -6,8 +6,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const navigation = [
-  { name: "Try our BMR calculator", href: "/user/kitchen/bmrcalculator" },
-  { name: "Sign Up", href: "/user/signup" },
+  { name: "Try our BMR calculator", href: "/bmrcalculator" },
+  { name: "Sign Up", href: "/signup" },
 ];
 
 export function HomeNavBar({props=navigation }) {
@@ -56,7 +56,7 @@ export function HomeNavBar({props=navigation }) {
         <ul>
           <li>
         <Link
-          href="/user/login"
+          href="/login"
           className="text-sm font-semibold leading-6 text-amber-300"
         >
           Log in <span aria-hidden="true">&rarr;</span>
@@ -108,7 +108,7 @@ export function HomeNavBar({props=navigation }) {
               </div>
               <div className="py-6">
                 <Link
-                  href="/user/login"
+                  href="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-100 hover:bg-gray-50"
                 >
                   Log in
