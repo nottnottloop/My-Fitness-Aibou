@@ -1,4 +1,4 @@
-import { HomeNavBar } from "@/app/components/Homenavbar";
+import { HomeNavBar } from "@/app/ui/Homenavbar";
 
 export default function Login() {
   return (
