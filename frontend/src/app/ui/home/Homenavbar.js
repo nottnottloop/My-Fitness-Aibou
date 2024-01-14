@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const navigation = [
-  { name: "Try our BMR calculator", href: "/bmrcalculator" },
+  { name: "Try our BMR calculator", href: "/bmr_calculator" },
   { name: "Sign Up", href: "/signup" },
 ];
 
