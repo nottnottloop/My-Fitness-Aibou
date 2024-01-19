@@ -14,9 +14,11 @@ import { cookies } from 'next/headers'
     }).then((res) => {
         if (!res.ok) {
           return res.text().then((text) => {
-            throw new Error(text);
+            JSON.stringify({flashMessage: new Error(text)})
           });
         }
+        console.log(res)
+
       
         return res.json();
       })

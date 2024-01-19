@@ -1,4 +1,4 @@
-import SideNav from "@/app/ui/dashboard/sidenav";
+import SideNav from "@/app/(post_login)/dashboard/components/sidenav";
 
 export default function Page() {
   return (

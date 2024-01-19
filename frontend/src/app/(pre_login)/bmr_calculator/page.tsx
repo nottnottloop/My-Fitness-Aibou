@@ -1,5 +1,5 @@
 "use client";
-import { HomeNavBar } from "@/app/ui/home/Homenavbar";
+import { HomeNavBar } from "@/app/components/Homenavbar";
 import { useState } from "react";
 
 export default function BmrCalculator() {

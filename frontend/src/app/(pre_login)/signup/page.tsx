@@ -1,18 +1,35 @@
 "use client";
-import { AddWorkoutLogResponse } from "@/app/lib/definitions";
-import { HomeNavBar } from "@/app/ui/home/Homenavbar";
+import { AddWorkoutLogResponse } from "@/app/lib/types";
+import { HomeNavBar } from "@/app/components/Homenavbar";
 import { useState } from "react";
+
+function formatFormData(formData: FormData) {
+  var exerciseName: string = formData.get("ExerciseName") as string;
+  var currentWeight: number | null = parseInt(
+    formData.get("CurrentWeight") as string
+  );
+  var maxReps: number | null = parseInt(formData.get("MaxReps") as string);
+  var notes: string | null = formData.get("Notes") as string;
+
+  // Example: Handle NaN for CurrentWeight and MaxReps
+  currentWeight = isNaN(currentWeight) ? null : currentWeight;
+  maxReps = isNaN(maxReps) ? null : maxReps;
+
+  // Now you can use ExerciseName, CurrentWeight, MaxReps, and Notes in your code
+
+  return {
+    ExerciseName: exerciseName,
+    CurrentWeight: currentWeight,
+    MaxReps: maxReps,
+    Notes: notes,
+  };
+}
 
 export default function SignUp() {
   const [flashMessage, setflashMessage] = useState("");
 
   async function postWorkoutlog(formData: FormData) {
-    const rawFormData = {
-      ExerciseName: formData.get("ExerciseName"),
-      CurrentWeight: parseInt(formData.get("CurrentWeight")),
-      MaxReps: parseInt(formData.get("MaxReps")),
-      Notes: formData.get("Notes"),
-    };
+    const rawFormData = formatFormData(formData);
 
     const res = await fetch("http://localhost:3000/api/addworkoutlog", {
       method: "POST",
