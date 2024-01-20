@@ -2,29 +2,32 @@
 import { HomeNavBar } from "@/app/components/Homenavbar";
 import { useState } from "react";
 
+function formatFormData(formData: FormData) {
+  var age: number = parseInt(formData.get("age") as string);
+  var weight: number = parseInt(formData.get("weight") as string);
+  var height: number = parseInt(formData.get("height") as string);
+  var gender: string = formData.get("gender") as string;
+
+  // Now you can use ExerciseName, CurrentWeight, MaxReps, and Notes in your code
+
+  return {
+    Age: age,
+    Weight: weight,
+    Height: height,
+    Gender: gender,
+  };
+}
+
 export default function BmrCalculator() {
   const [bmrResult, setBmrResult] = useState();
 
-  function getBmr(formData: FormData) {
-    const rawFormData = {
-      age: formData.get("age"),
-      weight: formData.get("weight"),
-      height: formData.get("height"),
-      gender: formData.get("gender"),
-    };
-    //console.log(rawFormData);
+  async function getBmr(formData: FormData) {
+    const rawFormData = formatFormData(formData);
 
-    const res = fetch(
-      "http://localhost:8080/kitchen/bmr?age=" +
-        rawFormData.age +
-        "&weight=" +
-        rawFormData.weight +
-        "&height=" +
-        rawFormData.height +
-        "&gender=" +
-        rawFormData.gender,
-      { method: "POST" }
-    )
+    fetch("/api/bmr_calculator", {
+      method: "POST",
+      body: JSON.stringify(rawFormData),
+    })
       .then((res) => {
         if (!res.ok) {
           return res.text().then((text) => {
@@ -104,6 +107,7 @@ export default function BmrCalculator() {
                       type="number"
                       name="height"
                       id="height"
+                      autoComplete="height"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                     />
                   </div>

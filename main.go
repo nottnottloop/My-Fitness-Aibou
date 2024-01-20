@@ -77,7 +77,7 @@ func main() {
 	session.Lifetime = 12 * time.Hour
 	session.HttpOnly = true
 	session.Persist = true
-	//session.Secure = true when in production
+	session.Secure = true //when in production
 
 	app := &application{
 		errorLog:    errorLog,
@@ -93,7 +93,8 @@ func main() {
 	}
 
 	infoLog.Printf("Starting server on %s", addr)
-	err = srv.ListenAndServe()
+	//err = srv.ListenAndServe() -http
+	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem") //https
 	errorLog.Fatal(err)
 
 }

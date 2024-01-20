@@ -21,3 +21,6 @@
 go.work
 
 .env
+tls/
+tls/cert.pem
+tls/key.pem

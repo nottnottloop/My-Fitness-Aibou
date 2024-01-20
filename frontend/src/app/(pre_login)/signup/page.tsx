@@ -31,7 +31,7 @@ export default function SignUp() {
   async function postWorkoutlog(formData: FormData) {
     const rawFormData = formatFormData(formData);
 
-    const res = await fetch("http://localhost:3000/api/addworkoutlog", {
+    const res = await fetch("/api/add_workoutlog", {
       method: "POST",
       body: JSON.stringify(rawFormData),
     });
