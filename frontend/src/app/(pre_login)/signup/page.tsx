@@ -42,8 +42,15 @@ export default function SignUp() {
   }
 
   function clearForm() {
-    document.getElementById("workoutlog-form").reset();
+    const formElement = document.getElementById(
+      "workoutlog-form"
+    ) as HTMLFormElement;
+
+    if (formElement) {
+      formElement.reset();
+    }
   }
+
   return (
     <>
       <HomeNavBar />

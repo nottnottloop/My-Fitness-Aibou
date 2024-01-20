@@ -86,17 +86,19 @@ func (app *application) addNewWorkoutLog(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	result, err := app.workoutLogs.Insert(userId, exerciseName, CurrentWeight, MaxReps, Notes)
+	_, err = app.workoutLogs.Insert(userId, exerciseName, CurrentWeight, MaxReps, Notes)
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	resultJson, err := json.Marshal(result)
+
+	var resultJson []byte
+	resultJson, err = json.Marshal("Workoutlog successfully added!")
 	if err != nil {
 		app.serverError(w, err)
 	}
 
-	app.session.Put(r, "flash", "Workoutlog successfully created!")
+	//app.session.Put(r, "flash", "Workoutlog successfully created!")
 
 	w.Write(resultJson)
 }

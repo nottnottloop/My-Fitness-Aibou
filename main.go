@@ -75,6 +75,9 @@ func main() {
 
 	session := sessions.New([]byte(secret))
 	session.Lifetime = 12 * time.Hour
+	session.HttpOnly = true
+	session.Persist = true
+	//session.Secure = true when in production
 
 	app := &application{
 		errorLog:    errorLog,
