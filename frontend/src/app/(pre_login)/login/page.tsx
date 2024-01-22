@@ -1,4 +1,4 @@
-import { HomeNavBar } from "@/app/ui/home/Homenavbar";
+import { HomeNavBar } from "@/app/components/Homenavbar";
 import Image from "next/image";
 
 export default function Login() {
