@@ -11,6 +11,7 @@ import (
 	"github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models"
 )
 
+// TO-DO UPDATE this to match sign up repsonse.
 type InvalidWorkoutLogDTO struct {
 	FormData   WorkoutLogFormData
 	FormErrors map[string]string

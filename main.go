@@ -10,7 +10,7 @@ import (
 	"runtime/debug"
 	"time"
 
-	msssql "github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models/mssql"
+	"github.com/Lionel-Wilson/My-Fitness-Aibou/pkg/models/mysql"
 	"github.com/golangcollege/sessions"
 	"github.com/joho/godotenv"
 
@@ -22,8 +22,9 @@ import (
 type application struct {
 	errorLog    *log.Logger
 	infoLog     *log.Logger
-	workoutLogs *msssql.WorkoutLogModel
+	workoutLogs *mysql.WorkoutLogModel
 	session     *sessions.Session
+	users       *mysql.UserModel
 }
 
 func (app *application) serverError(w http.ResponseWriter, err error) {
@@ -83,8 +84,9 @@ func main() {
 	app := &application{
 		errorLog:    errorLog,
 		infoLog:     infoLog,
-		workoutLogs: &msssql.WorkoutLogModel{DB: db},
+		workoutLogs: &mysql.WorkoutLogModel{DB: db},
 		session:     session,
+		users:       &mysql.UserModel{DB: db},
 	}
 
 	tlsConfig := &tls.Config{

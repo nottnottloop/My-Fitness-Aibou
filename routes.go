@@ -20,10 +20,12 @@ func (app *application) routes() http.Handler {
 	//router := http.NewServeMux()
 	// using bmizernay/pat package to implement RESTful routes
 	router := pat.New()
-	router.Get("/", http.HandlerFunc(app.Home))
+	//router.Get("/", http.HandlerFunc(app.Home))
 
 	//user
-	router.Post("/user/signup", http.HandlerFunc(app.Signup))
+	router.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
+	router.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
+	router.Post("/user/logout", dynamicMiddleware.ThenFunc(app.logoutUser))
 
 	//Kitchen Features
 	router.Post("/kitchen/bmr", http.HandlerFunc(app.GetBMR))

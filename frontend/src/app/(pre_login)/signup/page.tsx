@@ -2,49 +2,57 @@
 import { HomeNavBar } from "@/app/components/Homenavbar";
 import { useState } from "react";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { SignupResponse, StringMap, User } from "@/app/lib/types";
 
 function formatFormData(formData: FormData) {
-  var exerciseName: string = formData.get("ExerciseName") as string;
-  var currentWeight: number | null = parseInt(
-    formData.get("CurrentWeight") as string
-  );
-  var maxReps: number | null = parseInt(formData.get("MaxReps") as string);
-  var notes: string | null = formData.get("Notes") as string;
-
-  // Example: Handle NaN for CurrentWeight and MaxReps
-  currentWeight = isNaN(currentWeight) ? null : currentWeight;
-  maxReps = isNaN(maxReps) ? null : maxReps;
-
-  // Now you can use ExerciseName, CurrentWeight, MaxReps, and Notes in your code
+  var userName: string = formData.get("username") as string;
+  var about: string = formData.get("about") as string;
+  var firstName: string = formData.get("first-name") as string;
+  var lastName: string = formData.get("last-name") as string;
+  var email: string = formData.get("email") as string;
+  var country: string = formData.get("country") as string;
+  var password: string = formData.get("password") as string;
+  var dob: string = formData.get("dob") as string;
+  var gender: string = formData.get("gender") as string;
 
   return {
-    ExerciseName: exerciseName,
-    CurrentWeight: currentWeight,
-    MaxReps: maxReps,
-    Notes: notes,
+    userName: userName,
+    about: about,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    country: country,
+    password: password,
+    dob: dob,
+    gender: gender,
   };
 }
 
 export default function SignUp() {
-  //const [flashMessage, setflashMessage] = useState("");
+  const [flashMessage, setflashMessage] = useState("");
+  const [errors, setErrors] = useState<StringMap>({ field: "" });
 
-  /*
-  async function postWorkoutlog(formData: FormData) {
+  async function submitSignUpForm(formData: FormData) {
     const rawFormData = formatFormData(formData);
-
-    const res = await fetch("/api/add_workoutlog", {
+    const res = await fetch("/api/signup", {
       method: "POST",
       body: JSON.stringify(rawFormData),
     });
-    const data = await res.json();
-    const message = JSON.parse(data) as AddWorkoutLogResponse;
-    setflashMessage(message.flashMessage);
+
+    const data: SignupResponse = await res.json();
+    setflashMessage(data.flashMessage);
+
+    if (data.errors && Object.keys(data.errors).length > 0) {
+      setErrors(data.errors);
+      return;
+    }
+    clearForm();
     return;
-  }*/
+  }
 
   function clearForm() {
     const formElement = document.getElementById(
-      "workoutlog-form"
+      "signup-form"
     ) as HTMLFormElement;
 
     if (formElement) {
@@ -56,7 +64,7 @@ export default function SignUp() {
     <>
       <HomeNavBar />
       <div className="mx-auto max-w-7xl px-2 py-14 sm:px-6 lg:px-8">
-        <form>
+        <form id="signup-form" action={submitSignUpForm}>
           <div className="space-y-12">
             <div className="border-b border-amber-300/10 pb-12">
               <h2 className="text-base font-semibold leading-7 text-amber-300">
@@ -90,6 +98,22 @@ export default function SignUp() {
                       />
                     </div>
                   </div>
+                  <div className="mt-2">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium leading-6 text-amber-300"
+                    >
+                      Password
+                    </label>
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-400 sm:text-sm sm:leading-6"
+                    />
+                  </div>
                 </div>
 
                 <div className="col-span-full">
@@ -113,6 +137,43 @@ export default function SignUp() {
                   </p>
                 </div>
 
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="dob"
+                    className="block text-sm font-medium leading-6 text-amber-300"
+                  >
+                    Date of Birth
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="dob"
+                      name="dob"
+                      autoComplete="dob"
+                      type="date"
+                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:max-w-xs sm:text-sm sm:leading-6"
+                    ></input>
+                  </div>
+                </div>
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="gender"
+                    className="block text-sm font-medium leading-6 text-amber-300"
+                  >
+                    Gender
+                  </label>
+                  <div className="mt-2">
+                    <select
+                      id="gender"
+                      name="gender"
+                      autoComplete="gender"
+                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:max-w-xs sm:text-sm sm:leading-6"
+                    >
+                      <option>Male</option>
+                      <option>Female</option>
+                    </select>
+                  </div>
+                </div>
+                {/*
                 <div className="col-span-full">
                   <label
                     htmlFor="photo"
@@ -168,17 +229,11 @@ export default function SignUp() {
                     </div>
                   </div>
                 </div>
+*/}
               </div>
             </div>
 
-            <div className="border-b border-amber-300/10 pb-12">
-              <h2 className="text-base font-semibold leading-7 text-amber-300">
-                Personal Information
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-300">
-                Use a permanent address where you can receive mail.
-              </p>
-
+            <div className="mt-2">
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
                   <label
@@ -248,221 +303,13 @@ export default function SignUp() {
                       autoComplete="country-name"
                       className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
+                      <option>United Kingdom</option>
                       <option>United States</option>
                       <option>Canada</option>
-                      <option>Mexico</option>
+                      <option>Japan</option>
                     </select>
                   </div>
                 </div>
-
-                <div className="col-span-full">
-                  <label
-                    htmlFor="street-address"
-                    className="block text-sm font-medium leading-6 text-amber-300"
-                  >
-                    Street address
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      name="street-address"
-                      id="street-address"
-                      autoComplete="street-address"
-                      className="block w-full rounded-md border-0 py-1.5 text-amber-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-2 sm:col-start-1">
-                  <label
-                    htmlFor="city"
-                    className="block text-sm font-medium leading-6 text-amber-300"
-                  >
-                    City
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      name="city"
-                      id="city"
-                      autoComplete="address-level2"
-                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="region"
-                    className="block text-sm font-medium leading-6 text-amber-300"
-                  >
-                    State / Province
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      name="region"
-                      id="region"
-                      autoComplete="address-level1"
-                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="postal-code"
-                    className="block text-sm font-medium leading-6 text-amber-300"
-                  >
-                    ZIP / Postal code
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      name="postal-code"
-                      id="postal-code"
-                      autoComplete="postal-code"
-                      className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="border-b border-amber-300/10 pb-12">
-              <h2 className="text-base font-semibold leading-7 text-amber-300">
-                Notifications
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-300">
-                We'll always let you know about important changes, but you pick
-                what else you want to hear about.
-              </p>
-
-              <div className="mt-10 space-y-10">
-                <fieldset>
-                  <legend className="text-sm font-semibold leading-6 text-amber-300">
-                    By Email
-                  </legend>
-                  <div className="mt-6 space-y-6">
-                    <div className="relative flex gap-x-3">
-                      <div className="flex h-6 items-center">
-                        <input
-                          id="comments"
-                          name="comments"
-                          type="checkbox"
-                          className="h-4 w-4 rounded border-gray-300 text-amber-300 focus:ring-amber-300"
-                        />
-                      </div>
-                      <div className="text-sm leading-6">
-                        <label
-                          htmlFor="comments"
-                          className="font-medium text-amber-300"
-                        >
-                          Comments
-                        </label>
-                        <p className="text-gray-300">
-                          Get notified when someones posts a comment on a
-                          posting.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="relative flex gap-x-3">
-                      <div className="flex h-6 items-center">
-                        <input
-                          id="candidates"
-                          name="candidates"
-                          type="checkbox"
-                          className="h-4 w-4 rounded border-gray-300 text-amber-300 focus:ring-amber-300"
-                        />
-                      </div>
-                      <div className="text-sm leading-6">
-                        <label
-                          htmlFor="candidates"
-                          className="font-medium text-amber-300"
-                        >
-                          Candidates
-                        </label>
-                        <p className="text-gray-300">
-                          Get notified when a candidate applies for a job.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="relative flex gap-x-3">
-                      <div className="flex h-6 items-center">
-                        <input
-                          id="offers"
-                          name="offers"
-                          type="checkbox"
-                          className="h-4 w-4 rounded border-gray-300 text-amber-300 focus:ring-amber-300"
-                        />
-                      </div>
-                      <div className="text-sm leading-6">
-                        <label
-                          htmlFor="offers"
-                          className="font-medium text-amber-300"
-                        >
-                          Offers
-                        </label>
-                        <p className="text-gray-300">
-                          Get notified when a candidate accepts or rejects an
-                          offer.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <legend className="text-sm font-semibold leading-6 text-amber-300">
-                    Push Notifications
-                  </legend>
-                  <p className="mt-1 text-sm leading-6 text-gray-300">
-                    These are delivered via SMS to your mobile phone.
-                  </p>
-                  <div className="mt-6 space-y-6">
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="push-everything"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-amber-300 focus:ring-amber-300"
-                      />
-                      <label
-                        htmlFor="push-everything"
-                        className="block text-sm font-medium leading-6 text-amber-300"
-                      >
-                        Everything
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="push-email"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-amber-300 focus:ring-amber-300"
-                      />
-                      <label
-                        htmlFor="push-email"
-                        className="block text-sm font-medium leading-6 text-amber-300"
-                      >
-                        Same as email
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="push-nothing"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-amber-300 focus:ring-amber-300"
-                      />
-                      <label
-                        htmlFor="push-nothing"
-                        className="block text-sm font-medium leading-6 text-amber-300"
-                      >
-                        No push notifications
-                      </label>
-                    </div>
-                  </div>
-                </fieldset>
               </div>
             </div>
           </div>
@@ -471,17 +318,31 @@ export default function SignUp() {
             <button
               type="button"
               className="text-sm font-semibold leading-6 text-amber-300"
+              onClick={clearForm}
             >
-              Cancel
+              Clear
             </button>
             <button
               type="submit"
               className="rounded-md bg-amber-300 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-black hover:text-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
             >
-              Save
+              Sign Up
             </button>
           </div>
         </form>
+        <div>
+          <h1 className="text-2xl font-semibold leading-7 text-gray-100">
+            {flashMessage ?? ""}
+          </h1>
+          {Object.values(errors).map((error, index) => (
+            <h1
+              key={`error-${index}`}
+              className="text-2xl font-semibold leading-7 text-red-700"
+            >
+              {error}
+            </h1>
+          ))}
+        </div>
       </div>
     </>
   );

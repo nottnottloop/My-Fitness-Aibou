@@ -33,7 +33,7 @@ export function HomePage() {
         },
       ];
   return (
-    <div className="bg-gradient-to-r from-gray-950 from-25% via-gray-600 via-65% to-gray-500 to-90%">
+    <div className="bg-gradient-to-r from-gray-950 from-25% via-gray-950 via-65% to-gray-950 to-90%">
     <header className="absolute inset-x-0 top-0 z-50">
       <HomeNavBar   />
 
@@ -104,7 +104,7 @@ export function HomePage() {
       </div>
         */}
     </div>
-    <div className="overflow-hidden bg-gradient-to-r from-gray-950 from-25% via-gray-600 via-65% to-gray-500 to-90% py-24 sm:py-32">
+    <div className="overflow-hidden bg-gradient-to-r from-gray-950 from-25% via-gray-950 via-65% to-gray-950 to-90% py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           <div className="lg:pr-8 lg:pt-4">

@@ -1,4 +1,4 @@
-package msssql
+package mysql
 
 import (
 	"database/sql"
