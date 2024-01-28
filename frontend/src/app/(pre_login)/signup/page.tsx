@@ -138,7 +138,7 @@ export default function SignUp() {
                     <input
                       id="dob"
                       name="dob"
-                      autoComplete="dob"
+                      autoComplete="bday"
                       type="date"
                       className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:max-w-xs sm:text-sm sm:leading-6"
                     ></input>
@@ -155,7 +155,7 @@ export default function SignUp() {
                     <select
                       id="gender"
                       name="gender"
-                      autoComplete="gender"
+                      autoComplete="sex"
                       className="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
                       <option>Male</option>
@@ -308,7 +308,7 @@ export default function SignUp() {
             <button
               type="button"
               className="text-sm font-semibold leading-6 text-amber-300"
-              onClick={clearForm}
+              onClick={() => clearForm("signup-form")}
             >
               Clear
             </button>
