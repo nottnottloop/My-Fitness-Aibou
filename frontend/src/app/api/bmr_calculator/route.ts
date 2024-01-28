@@ -4,6 +4,7 @@ import { BmrFormData } from "@/app/lib/types";
 
 export async function POST(request: Request) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Set to "0" to disable certificate verification. set back to "1" when in prod
+  const go_server_url = await process.env.GO_SERVER_URL;
 
   const formData = (await request.json()) as BmrFormData;
   const age = JSON.stringify(formData.Age);
@@ -12,7 +13,8 @@ export async function POST(request: Request) {
   const gender = formData.Gender;
 
   const res = await fetch(
-    "https://localhost:8080/kitchen/bmr?age=" +
+    go_server_url +
+      "/kitchen/bmr?age=" +
       age +
       "&weight=" +
       weight +

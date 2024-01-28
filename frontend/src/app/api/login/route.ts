@@ -3,10 +3,11 @@ import { permanentRedirect } from "next/navigation";
 
 export async function POST(request: Request) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  const go_server_url = await process.env.GO_SERVER_URL;
 
   const loginDetails = await request.json();
 
-  const res = await fetch("https://localhost:8080/user/login", {
+  const res = await fetch(go_server_url + "/user/login", {
     method: "POST",
     body: JSON.stringify(loginDetails),
     agent: new (require("https").Agent)({ rejectUnauthorized: false }), // Ignore certificate verification
