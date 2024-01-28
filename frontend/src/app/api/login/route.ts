@@ -14,8 +14,8 @@ export async function POST(request: Request) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "1";
 
   if (!res.ok) {
-    const data = await res.json();
-    return new Response(JSON.stringify(data), {
+    const responseBody = await res.json();
+    return new Response(JSON.stringify(responseBody), {
       status: res.status,
     });
   }

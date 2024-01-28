@@ -82,13 +82,10 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	if strings.TrimSpace(signupData.LastName) == "" {
 		errors["LastName"] = "Last name cannot be blank"
 	}
-	dob, err := time.Parse("2006-01-02", signupData.Dob)
-	if err != nil {
-		fmt.Println("Error parsing date of birth:", err)
-		errors["DateOfBirth"] = "Error parsing date of birth"
-		app.serverError(w, err)
-		return
+	if strings.TrimSpace(signupData.Dob) == "" {
+		errors["DateOfBirth"] = "Please enter your date of birth"
 	}
+
 	response := SignupResponse{
 		FlashMessage: "",
 		Errors:       errors,
@@ -104,6 +101,14 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(resultJson)
+		return
+	}
+
+	dob, err := time.Parse("2006-01-02", signupData.Dob)
+	if err != nil {
+		fmt.Println("Error parsing date of birth:", err)
+		errors["DateOfBirth"] = "Error parsing date of birth"
+		app.serverError(w, err)
 		return
 	}
 

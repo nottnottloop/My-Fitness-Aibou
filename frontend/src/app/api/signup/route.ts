@@ -1,5 +1,7 @@
 "use server";
 
+import { permanentRedirect } from "next/navigation";
+
 export async function POST(request: Request) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Set to "0" to disable certificate verification. set back to "1" when in prod
 
@@ -9,20 +11,17 @@ export async function POST(request: Request) {
     method: "POST",
     body: JSON.stringify(formData),
     agent: new (require("https").Agent)({ rejectUnauthorized: false }), // Ignore certificate verification
-  })
-    .then((res) => {
-      if (!res.ok) {
-        return res.json().then((json) => {
-          throw json;
-        });
-      }
-      return res.json();
-    })
-    .catch((error) => {
-      return error; // Catch errors thrown by the server
+  });
+  if (!res.ok) {
+    const responseBody = await res.json();
+    return new Response(JSON.stringify(responseBody), {
+      status: res.status,
     });
+  }
 
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "1";
 
-  return Response.json(res);
+  const responseBody = await res.json(); //TO-DO: find out how to send flashmessage to redirected login page.
+
+  return permanentRedirect(`/login`);
 }
