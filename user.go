@@ -30,6 +30,11 @@ type SignupResponse struct {
 	Errors       map[string]string `json:"errors"`
 }
 
+type LoginFormData struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 var EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_" + "`" + "{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +52,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(signupData)
+	//fmt.Println(signupData)
 
 	errors := make(map[string]string)
 
@@ -82,6 +87,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error parsing date of birth:", err)
 		errors["DateOfBirth"] = "Error parsing date of birth"
 		app.serverError(w, err)
+		return
 	}
 	response := SignupResponse{
 		FlashMessage: "",
@@ -94,6 +100,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		resultJson, err := json.Marshal(response)
 		if err != nil {
 			app.serverError(w, err)
+			return
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(resultJson)
@@ -108,6 +115,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		resultJson, err := json.Marshal(response)
 		if err != nil {
 			app.serverError(w, err)
+			return
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(resultJson)
@@ -129,7 +137,38 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Authenticate and login the user...")
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+	var loginDetails LoginFormData
+
+	err = json.Unmarshal(body, &loginDetails)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	id, err := app.users.Authenticate(loginDetails.Email, loginDetails.Password)
+	if err == models.ErrInvalidCredentials {
+		var genericErrorJson []byte
+		genericErrorJson, err = json.Marshal("Email or Password is incorrect")
+		if err != nil {
+			app.serverError(w, err)
+			return
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(genericErrorJson)
+		return
+	} else if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.session.Put(r, "userID", id)
+
+	w.WriteHeader(http.StatusOK)
+
 }
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Logout the user...")

@@ -1,7 +1,38 @@
+"use client";
 import { HomeNavBar } from "@/app/components/Homenavbar";
+import { clearForm } from "@/app/lib/utils";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { useState } from "react";
+
+function formatFormData(formData: FormData) {
+  var email: string = formData.get("email") as string;
+  var password: string = formData.get("password") as string;
+
+  return {
+    email: email,
+    password: password,
+  };
+}
 
 export default function Login() {
+  const [genericError, setgenericError] = useState("");
+
+  async function login(formData: FormData) {
+    const rawFormData = formatFormData(formData);
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(rawFormData),
+    });
+    if (!res.ok) {
+      const data: string = await res.json();
+      setgenericError(data);
+      clearForm("login-form");
+      return;
+    }
+    redirect(res.url);
+  }
+
   return (
     <>
       <HomeNavBar />
@@ -19,8 +50,19 @@ export default function Login() {
           </h2>
         </div>
 
+        {genericError && (
+          <h2 className="mt-10 text-center text-xl font-bold leading-9 tracking-tight text-red-500">
+            {genericError}
+          </h2>
+        )}
+
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            id="login-form"
+            className="space-y-6"
+            action={login}
+            method="POST"
+          >
             <div>
               <label
                 htmlFor="email"

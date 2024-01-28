@@ -3,6 +3,7 @@ import { HomeNavBar } from "@/app/components/Homenavbar";
 import { useState } from "react";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { SignupResponse, StringMap, User } from "@/app/lib/types";
+import { clearForm } from "@/app/lib/utils";
 
 function formatFormData(formData: FormData) {
   var userName: string = formData.get("username") as string;
@@ -46,18 +47,8 @@ export default function SignUp() {
       setErrors(data.errors);
       return;
     }
-    clearForm();
+    clearForm("signup-form");
     return;
-  }
-
-  function clearForm() {
-    const formElement = document.getElementById(
-      "signup-form"
-    ) as HTMLFormElement;
-
-    if (formElement) {
-      formElement.reset();
-    }
   }
 
   return (
@@ -337,7 +328,7 @@ export default function SignUp() {
           {Object.values(errors).map((error, index) => (
             <h1
               key={`error-${index}`}
-              className="text-2xl font-semibold leading-7 text-red-700"
+              className="text-2xl font-semibold leading-7 text-red-500"
             >
               {error}
             </h1>
