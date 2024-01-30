@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -172,11 +173,49 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	}
 	app.session.Put(r, "userID", id)
 
-	w.WriteHeader(http.StatusOK)
+	// Create a new cookie
+	cookie := &http.Cookie{
+		Name:     "userID",
+		Value:    strconv.Itoa(id),
+		Expires:  time.Now().Add(24 * time.Hour), // Cookie expires in 24 hours
+		HttpOnly: true,                           // HttpOnly flag for added security
+	}
 
+	// Set the cookie in the response
+	http.SetCookie(w, cookie)
+
+	w.WriteHeader(http.StatusOK)
 }
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Logout the user...")
+}
+func (app *application) getUserDetails(w http.ResponseWriter, r *http.Request) {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+
+	var userId int
+
+	err = json.Unmarshal(body, &userId)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	userDetails, err := app.users.Get(userId)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	var resultJson []byte
+	resultJson, err = json.Marshal(userDetails)
+	if err != nil {
+		app.serverError(w, err)
+	}
+	w.Write(resultJson)
 }
 
 /*gin version
