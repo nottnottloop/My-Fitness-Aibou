@@ -30,6 +30,10 @@ export default function Login() {
       clearForm("login-form");
       return;
     }
+    console.log("Res.url:");
+    console.log(res.url);
+    console.log(res);
+
     redirect(res.url);
   }
 
@@ -57,12 +61,7 @@ export default function Login() {
         )}
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form
-            id="login-form"
-            className="space-y-6"
-            action={login}
-            method="POST"
-          >
+          <form id="login-form" className="space-y-6" action={login}>
             <div>
               <label
                 htmlFor="email"

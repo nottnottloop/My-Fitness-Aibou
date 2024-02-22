@@ -172,6 +172,17 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	app.session.Put(r, "userID", id)
+	userDetails, err := app.users.Get(id)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	var resultJson []byte
+	resultJson, err = json.Marshal(userDetails)
+	if err != nil {
+		app.serverError(w, err)
+	}
 
 	// Create a new cookie
 	cookie := &http.Cookie{
@@ -183,7 +194,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 
 	// Set the cookie in the response
 	http.SetCookie(w, cookie)
-
+	w.Write(resultJson)
 	w.WriteHeader(http.StatusOK)
 }
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {

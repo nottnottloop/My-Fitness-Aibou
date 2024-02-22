@@ -29,7 +29,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-800 `}>{children}</body>
+      {/*<body className={`${inter.className} bg-gray-800 `}>{children}</body>} TO-DO: Figure out how to update this when click dark mode*/}
+      <body className={`${inter.className} bg-gray-100 `}>{children}</body>
     </html>
   );
 }
