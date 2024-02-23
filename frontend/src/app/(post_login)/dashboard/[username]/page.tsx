@@ -23,7 +23,7 @@ import Header from "../components/JoyUI/Header";
 
 //JoyUI imports end
 
-export default function Page() {
+export default function Page({ params }: { params: { username: string } }) {
   const [user, setUser] = useState({
     userName: "",
     about: "",
@@ -84,7 +84,7 @@ export default function Page() {
         <CssBaseline />
         <Box sx={{ display: "flex", minHeight: "100dvh" }}>
           <Header />
-          <Sidebar />
+          <Sidebar usernameSlug={params.username} />
           <Box
             component="main"
             className="MainContent"
@@ -128,9 +128,6 @@ export default function Page() {
                 >
                   Dashboard
                 </Link>
-                <Typography color="primary" fontWeight={500} fontSize={12}>
-                  Orders
-                </Typography>
               </Breadcrumbs>
             </Box>
             <Box
@@ -145,18 +142,9 @@ export default function Page() {
               }}
             >
               <Typography level="h2" component="h1">
-                Orders
+                Overview
               </Typography>
-              <Button
-                color="primary"
-                startDecorator={<DownloadRoundedIcon />}
-                size="sm"
-              >
-                Download PDF
-              </Button>
             </Box>
-            <OrderTable />
-            <OrderList />
           </Box>
         </Box>
       </CssVarsProvider>

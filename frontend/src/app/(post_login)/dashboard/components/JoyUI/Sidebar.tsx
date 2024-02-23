@@ -65,7 +65,7 @@ function Toggler({
   );
 }
 
-export default function Sidebar() {
+export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
   return (
     <Sheet
       className="Sidebar"
@@ -122,7 +122,7 @@ export default function Sidebar() {
         <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
         </IconButton>
-        <Typography level="title-lg">Acme Co.</Typography>
+        <Typography level="title-lg">MyFitnessAibou</Typography>
         <ColorSchemeToggle sx={{ ml: "auto" }} />
       </Box>
       <Input
@@ -150,7 +150,9 @@ export default function Sidebar() {
             "--ListItem-radius": (theme) => theme.vars.radius.sm,
           }}
         >
+          {/*
           <ListItem>
+           
             <ListItemButton>
               <HomeRoundedIcon />
               <ListItemContent>
@@ -158,9 +160,15 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
+        */}
 
           <ListItem>
-            <ListItemButton>
+            <ListItemButton
+              selected
+              role="menuitem"
+              component="a"
+              href={`/dashboard/${usernameSlug}`}
+            >
               <DashboardRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Dashboard</Typography>
@@ -168,22 +176,26 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
 
-          <ListItem>
-            <ListItemButton selected>
+          {/*<ListItem>
+            <ListItemButton
+              role="menuitem"
+              component="a"
+              href={`/dashboard/${usernameSlug}/orders`}
+            >
               <ShoppingCartRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Orders</Typography>
+                <Typography level="title-sm">Kitchen</Typography>
               </ListItemContent>
             </ListItemButton>
-          </ListItem>
+      </ListItem>*/}
 
           <ListItem nested>
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <AssignmentRoundedIcon />
+                  <ShoppingCartRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Tasks</Typography>
+                    <Typography level="title-sm">Kitchen</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? "rotate(180deg)" : "none" }}
@@ -193,16 +205,46 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>All tasks</ListItemButton>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href={`/dashboard/${usernameSlug}/orders`}
+                  >
+                    Track Calories
+                  </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Backlog</ListItemButton>
+                  <ListItemButton>BMR Calculator</ListItemButton>
+                </ListItem>
+              </List>
+            </Toggler>
+          </ListItem>
+          <ListItem nested>
+            <Toggler
+              renderToggle={({ open, setOpen }) => (
+                <ListItemButton onClick={() => setOpen(!open)}>
+                  <AssignmentRoundedIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Training</Typography>
+                  </ListItemContent>
+                  <KeyboardArrowDownIcon
+                    sx={{ transform: open ? "rotate(180deg)" : "none" }}
+                  />
+                </ListItemButton>
+              )}
+            >
+              <List sx={{ gap: 0.5 }}>
+                <ListItem sx={{ mt: 0.5 }}>
+                  <ListItemButton>Add exercises</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>In progress</ListItemButton>
+                  <ListItemButton>View exercises</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Done</ListItemButton>
+                  <ListItemButton>Track Progress</ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>One Rep Max Calculator</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
