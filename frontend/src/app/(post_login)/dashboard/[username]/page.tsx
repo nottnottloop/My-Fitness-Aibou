@@ -157,7 +157,13 @@ export default function Page({ params }: { params: { username: string } }) {
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: {
+                  xs: "center",
+                  sm: "center",
+                  md: "space-evenly",
+                  lg: "space-evenly",
+                  xl: "space-evenly",
+                },
                 flexDirection: {
                   xs: "column",
                   sm: "column",
