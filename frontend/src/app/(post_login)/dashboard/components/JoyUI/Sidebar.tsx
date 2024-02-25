@@ -250,7 +250,7 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
             </Toggler>
           </ListItem>
 
-          <ListItem>
+          {/*<ListItem>   TO-DO: uncomment when add messaging feature
             <ListItemButton
               role="menuitem"
               component="a"
@@ -264,7 +264,7 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
                 4
               </Chip>
             </ListItemButton>
-          </ListItem>
+              </ListItem>*/}
 
           <ListItem nested>
             <Toggler
