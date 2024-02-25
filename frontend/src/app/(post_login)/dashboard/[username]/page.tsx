@@ -20,6 +20,7 @@ import Sidebar from "../components/JoyUI/Sidebar";
 import OrderTable from "../components/JoyUI/OrderTable";
 import OrderList from "../components/JoyUI/OrderList";
 import Header from "../components/JoyUI/Header";
+import DonutChart from "../components/tremor/DonutChart";
 
 //JoyUI imports end
 
@@ -50,6 +51,7 @@ export default function Page({ params }: { params: { username: string } }) {
         console.log(response);
 
         const userDetails: UserDetails = await response.json();
+
         setUser(userDetails);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -144,6 +146,14 @@ export default function Page({ params }: { params: { username: string } }) {
               <Typography level="h2" component="h1">
                 Overview
               </Typography>
+            </Box>
+            <Box>
+              <Typography level="h3" component="h2">
+                Welcome back {user.firstName}!
+              </Typography>
+            </Box>
+            <Box>
+              <DonutChart></DonutChart>
             </Box>
           </Box>
         </Box>
