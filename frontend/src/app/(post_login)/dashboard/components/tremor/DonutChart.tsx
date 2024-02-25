@@ -31,10 +31,10 @@ export default function Example() {
   return (
     <>
       <Card className="sm:mx-auto sm:max-w-lg">
-        <Typography level="h2" component="h1">
+        <Typography level="h4" component="h1">
           Calories
         </Typography>
-        <Typography level="h4" component="h2">
+        <Typography level="h5" component="h2">
           Remaining = Goal - Food + Exercise
         </Typography>
 
@@ -45,6 +45,7 @@ export default function Example() {
           index="name"
           showTooltip={false}
           colors={["cyan", "blue", "indigo", "violet", "fuchsia"]}
+          showAnimation={true}
         />
         <p className="mt-8 flex items-center justify-between text-tremor-label text-tremor-content dark:text-dark-tremor-content">
           <span>Category</span>

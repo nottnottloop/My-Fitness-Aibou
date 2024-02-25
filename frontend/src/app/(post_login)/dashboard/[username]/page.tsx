@@ -21,6 +21,8 @@ import OrderTable from "../components/JoyUI/OrderTable";
 import OrderList from "../components/JoyUI/OrderList";
 import Header from "../components/JoyUI/Header";
 import DonutChart from "../components/tremor/DonutChart";
+import LineChartUsageExample from "../components/tremor/LineChart";
+import Divider from "@mui/material/Divider";
 
 //JoyUI imports end
 
@@ -152,13 +154,29 @@ export default function Page({ params }: { params: { username: string } }) {
                 Welcome back {user.firstName}!
               </Typography>
             </Box>
-            <Box>
-              <DonutChart></DonutChart>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: {
+                  xs: "column",
+                  sm: "column",
+                  md: "row",
+                  lg: "row",
+                  xl: "row",
+                },
+              }}
+            >
+              <Box ml={4} mr={4} mt={4}>
+                <DonutChart></DonutChart>
+              </Box>
+              <Box ml={4} mr={4} mt={4} mb={4}>
+                <LineChartUsageExample></LineChartUsageExample>
+              </Box>
             </Box>
           </Box>
         </Box>
       </CssVarsProvider>
-      );
     </>
   );
 }

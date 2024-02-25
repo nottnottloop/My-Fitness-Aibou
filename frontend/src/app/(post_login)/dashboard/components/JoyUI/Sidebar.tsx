@@ -25,6 +25,8 @@ import QuestionAnswerRoundedIcon from "@mui/icons-material/QuestionAnswerRounded
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import SupportRoundedIcon from "@mui/icons-material/SupportRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import ModeStandbyRoundedIcon from "@mui/icons-material/ModeStandbyRounded";
+import Person2RoundedIcon from "@mui/icons-material/Person2Rounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded";
@@ -123,7 +125,7 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
           <BrightnessAutoRoundedIcon />
         </IconButton>
         <Typography level="title-lg">MyFitnessAibou</Typography>
-        <ColorSchemeToggle sx={{ ml: "auto" }} />
+        {/*TO-DO: fIGURE OUT TO FIX SIZE BEFORE UNCOMMENTING <ColorSchemeToggle sx={{ ml: "auto" }} />*/}
       </Box>
       <Input
         size="sm"
@@ -235,16 +237,14 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>Add exercises</ListItemButton>
+                  <ListItemButton>Create Workout</ListItemButton>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemButton>Track Weight</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>View exercises</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Track Progress</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>One Rep Max Calculator</ListItemButton>
+                  <ListItemButton>1 Rep Max Calculator</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -270,9 +270,10 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <GroupRoundedIcon />
+                  {/*<GroupRoundedIcon /> social icon*/}
+                  <SettingsRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
+                    <Typography level="title-sm">Settings</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? "rotate(180deg)" : "none" }}
@@ -282,19 +283,23 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
+                  <Person2RoundedIcon />
                   <ListItemButton
                     role="menuitem"
                     component="a"
                     href="/joy-ui/getting-started/templates/profile-dashboard/"
                   >
-                    My profile
+                    My Profile
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Create a new user</ListItemButton>
+                  <ModeStandbyRoundedIcon />
+                  <ListItemButton>Goals</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Roles & permission</ListItemButton>
+                  <SettingsRoundedIcon />
+
+                  <ListItemButton>Settings</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -315,12 +320,6 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
             <ListItemButton>
               <SupportRoundedIcon />
               Support
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <SettingsRoundedIcon />
-              Settings
             </ListItemButton>
           </ListItem>
         </List>

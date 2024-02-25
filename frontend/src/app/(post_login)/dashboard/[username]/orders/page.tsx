@@ -118,7 +118,6 @@ export default function Page({ params }: { params: { username: string } }) {
           </Box>
         </Box>
       </CssVarsProvider>
-      );
     </>
   );
 }
