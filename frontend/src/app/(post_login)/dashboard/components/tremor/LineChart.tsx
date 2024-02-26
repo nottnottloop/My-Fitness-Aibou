@@ -4,6 +4,8 @@ import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import Typography from "@mui/joy/Typography";
 import { LineChart } from "@tremor/react";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { Box } from "@mui/joy";
 
 const chartdata = [
   {
@@ -64,9 +66,20 @@ export default function LineChartUsageExample() {
   return (
     <>
       <Card className="sm:mx-auto sm:max-w-lg ">
-        <Typography level="h4" component="h1">
-          Weight (Last 90 days)
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography level="h4" component="h1">
+            Weight (Last 90 days)
+          </Typography>
+          <Box pt={0.2}>
+            <AddRoundedIcon></AddRoundedIcon>
+          </Box>
+        </Box>
+
         <LineChart
           className="mt-4 h-72"
           data={chartdata}
