@@ -1,6 +1,13 @@
 "use client";
+import { Box } from "@mui/joy";
 import Typography from "@mui/joy/Typography";
-import { Card, DonutChart, List, ListItem } from "@tremor/react";
+import {
+  Card,
+  DonutChart,
+  List,
+  ListItem,
+  ProgressCircle,
+} from "@tremor/react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -15,7 +22,7 @@ const data = [
   },
   {
     name: "Food",
-    amount: 900,
+    amount: 1200,
     share: "19.6%",
     color: "bg-blue-500",
   },
@@ -27,7 +34,17 @@ const data = [
   },
 ];
 
+function calculateCalorieProgress() {
+  var basegoal = data[0].amount;
+  var food = data[1].amount;
+  var exercise = data[2].amount;
+
+  var progress = ((food - exercise) / basegoal) * 100;
+  return progress;
+}
+
 export default function Example() {
+  var progress = calculateCalorieProgress();
   return (
     <>
       <Card className="sm:mx-auto sm:max-w-lg">
@@ -37,19 +54,28 @@ export default function Example() {
         <Typography level="h5" component="h2">
           Remaining = Goal - Food + Exercise
         </Typography>
-
-        <DonutChart
+        <Box
+          mt={4}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <ProgressCircle value={progress} size="lg" />
+        </Box>
+        {/*<DonutChart
           className="mt-8"
           data={data}
           category="amount"
           index="name"
           showTooltip={false}
           colors={["cyan", "blue", "indigo", "violet", "fuchsia"]}
+          variant="donut"
           showAnimation={true}
-        />
+  />*/}
         <p className="mt-8 flex items-center justify-between text-tremor-label text-tremor-content dark:text-dark-tremor-content">
           <span>Category</span>
-          <span>Amount / Share</span>
+          <span>Amount</span>
         </p>
         <List className="mt-2">
           {data.map((item) => (
@@ -69,9 +95,6 @@ export default function Example() {
               <div className="flex items-center space-x-2">
                 <span className="font-medium tabular-nums text-tremor-content-strong dark:text-dark-tremor-content-strong">
                   {item.amount}
-                </span>
-                <span className="rounded-tremor-small bg-tremor-background-subtle px-1.5 py-0.5 text-tremor-label font-medium tabular-nums text-tremor-content-emphasis dark:bg-dark-tremor-background-subtle dark:text-dark-tremor-content-emphasis">
-                  {item.share}
                 </span>
               </div>
             </ListItem>
