@@ -216,7 +216,13 @@ export default function Sidebar({ usernameSlug }: { usernameSlug: string }) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>BMR Calculator</ListItemButton>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href={`/dashboard/${usernameSlug}/bmr_calculator`}
+                  >
+                    BMR Calculator
+                  </ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
