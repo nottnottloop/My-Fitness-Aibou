@@ -2,4 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/*button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+  background-color: green;
+  background-image: none;
+}*/
 
+.blue-button {
+	background-color: var(--variant-solidBg, var(--joy-palette-primary-solidBg, var(--joy-palette-primary-500, #0B6BCB)));
+}

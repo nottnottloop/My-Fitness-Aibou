@@ -148,7 +148,7 @@ export default function Workouts({ params }: { params: { username: string } }) {
                 },
               }}
             >
-              <Button startDecorator={<Add />} variant="solid" color="primary">
+              <Button className="blue-button" startDecorator={<Add />} variant="solid" color="primary">
                 Create Workout
               </Button>
             </Box>
