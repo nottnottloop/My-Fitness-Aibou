@@ -75,8 +75,12 @@ export default function BmrCalculator({
 
   return (
     <>
-      <CssVarsProvider disableTransitionOnChange>
-        <CssBaseline />
+      <CssVarsProvider
+        disableTransitionOnChange
+        modeStorageKey="joy-bmr-calculator-color-scheme"
+        defaultColorScheme="light"
+        defaultMode="light"
+      >
         <Box sx={{ display: "flex", minHeight: "100dvh" }}>
           <Header />
           <Sidebar usernameSlug={params.username} />
