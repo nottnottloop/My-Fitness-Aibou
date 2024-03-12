@@ -145,4 +145,10 @@ const config: Config = {
   plugins: [require("@headlessui/tailwindcss"), require("@tailwindcss/forms")],
 };
 
+module.exports = {
+  corePlugins: {
+    preflight: false,
+  }
+}
+
 export default config;
